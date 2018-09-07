@@ -1,0 +1,32 @@
+{
+  "name": "twitch-pubsub-client",
+  "version": "0.1.0",
+  "description": "Interact with the Twitch PubSub interface.",
+  "main": "lib",
+  "types": "lib/index",
+  "repository": "github:d-fischer/twitch-pubsub",
+  "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/randomstring": "^1.1.6",
+    "@types/ws": "^4.0.0",
+    "randomstring": "^1.1.5",
+    "universal-websocket-client": "^1.0.2",
+    "ws": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.19",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^4.1.1",
+    "twitch": "^1.0.0-pre.2",
+    "typescript": "^3.0.1"
+  },
+  "peerDependencies": {
+    "twitch": "^1.0.0-pre.2"
+  },
+  "scripts": {
+    "lint": "tslint --project .",
+    "build": "tsc",
+    "prepare": "yarn run lint && yarn run build"
+  }
+}
