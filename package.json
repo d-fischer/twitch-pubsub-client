@@ -4,7 +4,7 @@
   "description": "Interact with the Twitch PubSub interface.",
   "main": "lib",
   "types": "lib/index",
-  "repository": "github:d-fischer/twitch-pubsub",
+  "repository": "github:d-fischer/twitch-pubsub-client",
   "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
   "license": "MIT",
   "dependencies": {
