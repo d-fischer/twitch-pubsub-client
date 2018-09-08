@@ -1,6 +1,6 @@
 {
   "name": "twitch-pubsub-client",
-  "version": "0.1.0",
+  "version": "1.0.0-pre.0",
   "description": "Interact with the Twitch PubSub interface.",
   "main": "lib",
   "types": "lib/index",
