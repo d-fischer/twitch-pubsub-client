@@ -1,6 +1,6 @@
 import { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 import { NonEnumerable } from '../Toolkit/Decorators';
-import TwitchClient, { HelixUser } from 'twitch';
+import TwitchClient from 'twitch';
 
 /** @private */
 export interface PubSubCommerceMessageData extends PubSubBasicMessageInfo {
@@ -74,7 +74,7 @@ export default class PubSubCommerceMessage {
 	/**
 	 * Retrieves more data about the user.
 	 */
-	async getUser(): Promise<HelixUser> {
+	async getUser() {
 		return this._twitchClient.helix.users.getUserById(this._data.user_id);
 	}
 }

@@ -1,6 +1,6 @@
 import { NonEnumerable } from '../Toolkit/Decorators';
 import { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
-import TwitchClient, { HelixUser, HelixUserType } from 'twitch';
+import TwitchClient, { HelixUserType } from 'twitch';
 
 /** @private */
 export interface PubSubWhisperTags {
@@ -84,7 +84,7 @@ export default class PubSubWhisperMessage {
 	/**
 	 * Retrieves more data about the user who sent the whisper.
 	 */
-	async getSender(): Promise<HelixUser> {
+	async getSender() {
 		return this._twitchClient.helix.users.getUserById(this._data.data_object.from_id.toString());
 	}
 }

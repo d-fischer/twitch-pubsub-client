@@ -1,6 +1,6 @@
 import { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 import { NonEnumerable } from '../Toolkit/Decorators';
-import TwitchClient, { HelixUser } from 'twitch';
+import TwitchClient from 'twitch';
 
 /** @private */
 export interface PubSubSubscriptionDetail {
@@ -94,7 +94,7 @@ export default class PubSubSubscriptionMessage {
 	/**
 	 * Retrieves more data about the subscribing user.
 	 */
-	async getUser(): Promise<HelixUser> {
+	async getUser() {
 		return this._twitchClient.helix.users.getUserById(this.userId);
 	}
 
@@ -103,7 +103,7 @@ export default class PubSubSubscriptionMessage {
 	 *
 	 * Throws if the subscription is not a gift.
 	 */
-	async getGifter(): Promise<HelixUser> {
+	async getGifter() {
 		if (!this.isGift) {
 			throw new TypeError('Trying to get the gifter of a subscription that\'s not a gift');
 		}
