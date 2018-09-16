@@ -31,6 +31,8 @@ const accessToken = 'abc123';
 await client.listen(`channel-subscribe-events-v1.${userId}`, accessToken);
 ```
 
+Please note that if you don't listen to any topic in the first 15 seconds after connecting, Twitch will close the connection.
+
 Later, you can stop listening to any events you're listening to again:
 
 ```typescript
