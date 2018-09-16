@@ -2,22 +2,19 @@ import { PubSubBasicMessageInfo } from './PubSubMessage';
 import { NonEnumerable } from '../Toolkit/Decorators';
 import TwitchClient from 'twitch';
 
-/** @private */
-export interface PubSubBitsMessageBitsEntitlement {
+export interface PubSubBitsMessageBadgeEntitlement {
 	previous_version: number;
 	new_version: number;
 }
 
-/** @private */
 export interface PubSubBitsMessageContent extends PubSubBasicMessageInfo {
 	chat_message: string;
 	bits_used: number;
 	total_bits_used: number;
 	context: 'cheer'; // TODO is this complete?
-	badge_entitlement: PubSubBitsMessageBitsEntitlement | null;
+	badge_entitlement: PubSubBitsMessageBadgeEntitlement | null;
 }
 
-/** @private */
 export interface PubSubBitsMessageData {
 	data: PubSubBitsMessageContent;
 	version: string;

@@ -2,7 +2,7 @@
 
 ## Installation
 
-To add Twitch.js and this pubsub module to your project, just execute:
+To add Twitch.js and the PubSub client to your project, just execute:
 
 	yarn add twitch twitch-pubsub-client
 

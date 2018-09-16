@@ -5,5 +5,34 @@
 	"routerMode": "htmlSuffix",
 	"baseUrl": "/twitch-pubsub-client",
 
-	"indexTitle": "Twitch.js PubSub Client"
+	"indexTitle": "Twitch.js PubSub Client",
+	"categories": [
+		{
+			"name": "basic-usage",
+			"title": "Basic usage",
+			"articles": [
+				{
+					"name": "getting-started",
+					"title": "Getting started",
+					"file": "basic-usage/getting-started.md"
+				},
+				{
+					"name": "listening-to-single-channel",
+					"title": "Listening to a single channel",
+					"file": "basic-usage/listening-to-single-channel.md"
+				}
+			]
+		},
+		{
+			"name": "low-level",
+			"title": "Low level usage",
+			"articles": [
+				{
+					"name": "one-client-multiple-channels",
+					"title": "One client, multiple channels",
+					"file": "low-level/one-client-multiple-channels.md"
+				}
+			]
+		}
+	]
 }

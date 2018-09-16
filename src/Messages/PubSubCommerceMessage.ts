@@ -2,7 +2,6 @@ import { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 import { NonEnumerable } from '../Toolkit/Decorators';
 import TwitchClient from 'twitch';
 
-/** @private */
 export interface PubSubCommerceMessageData extends PubSubBasicMessageInfo {
 	display_name: string;
 	item_image_url: string;

@@ -2,12 +2,10 @@ import { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 import { NonEnumerable } from '../Toolkit/Decorators';
 import TwitchClient from 'twitch';
 
-/** @private */
 export interface PubSubSubscriptionDetail {
 	context: 'sub' | 'resub';
 }
 
-/** @private */
 export interface PubSubSubscriptionGiftDetail {
 	context: 'subgift';
 	recipient_id: string;
@@ -15,7 +13,6 @@ export interface PubSubSubscriptionGiftDetail {
 	recipient_display_name: string;
 }
 
-/** @private */
 export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
 	display_name: string;
 	sub_plan: 'Prime' | '1000' | '2000' | '3000';

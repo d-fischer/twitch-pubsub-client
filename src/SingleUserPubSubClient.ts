@@ -96,7 +96,7 @@ export default class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubBitsMessage} object.
 	 */
-	async addBitsListener(callback: (message: PubSubBitsMessage) => void) {
+	async onBits(callback: (message: PubSubBitsMessage) => void) {
 		return this._addListener('channel-bits-events-v1', callback);
 	}
 
@@ -107,7 +107,7 @@ export default class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubSubscriptionMessage} object.
 	 */
-	async addSubListener(callback: (message: PubSubSubscriptionMessage) => void) {
+	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void) {
 		return this._addListener('channel-subscribe-events-v1', callback, 'channel_subscriptions');
 	}
 
@@ -118,7 +118,7 @@ export default class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubCommerceMessage} object.
 	 */
-	async addCommerceListener(callback: (message: PubSubCommerceMessage) => void) {
+	async onCommerce(callback: (message: PubSubCommerceMessage) => void) {
 		return this._addListener('channel-commerce-events-v1', callback);
 	}
 
@@ -129,7 +129,7 @@ export default class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubWhisperMessage} object.
 	 */
-	async addWhisperListener(callback: (message: PubSubWhisperMessage) => void) {
+	async onWhisper(callback: (message: PubSubWhisperMessage) => void) {
 		return this._addListener('whispers', callback, 'chat_login');
 	}
 
