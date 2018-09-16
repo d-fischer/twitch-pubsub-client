@@ -6,6 +6,7 @@
 	"baseUrl": "/twitch-pubsub-client",
 
 	"indexTitle": "Twitch.js PubSub Client",
+	"indexFile": "index.md",
 	"categories": [
 		{
 			"name": "basic-usage",
