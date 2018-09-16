@@ -1,5 +1,4 @@
 import * as WebSocket from 'universal-websocket-client';
-import * as randomstring from 'randomstring';
 import { EventEmitter, Listener } from './Toolkit/TypedEventEmitter';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 import { PubSubMessageData } from './Messages/PubSubMessage';
@@ -84,7 +83,7 @@ export default class PubSubClient extends EventEmitter {
 
 	private async _sendNonced<T extends PubSubNoncedOutgoingPacket>(packet: T) {
 		return new Promise<void>((resolve, reject) => {
-			const nonce = randomstring.generate(16);
+			const nonce = Math.random().toString(16).slice(2);
 
 			this._onResponse((recvNonce, error) => {
 				if (recvNonce === nonce) {
