@@ -1,5 +1,5 @@
 {
-	"inputDirs": ["src"],
+	"inputDirs": ["src", "types"],
 	"outputDir": "generatedDocs",
 	"mode": "html",
 	"routerMode": "htmlSuffix",
