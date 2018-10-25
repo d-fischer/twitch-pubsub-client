@@ -7,6 +7,7 @@ import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './Mess
 import PubSubCommerceMessage, { PubSubCommerceMessageData } from './Messages/PubSubCommerceMessage';
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import PubSubMessage from './Messages/PubSubMessage';
+import { LogLevel } from '@d-fischer/logger';
 
 /**
  * A higher level PubSub client attached to a single user.
@@ -24,10 +25,11 @@ export default class SingleUserPubSubClient {
 	 *
 	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
 	 * @param pubSubClient The underlying {@PubSubClient} instance. If not given, we'll create a new one.
+	 * @param logLevel The level of logging to use for the PubSub client.
 	 */
-	constructor(twitchClient: TwitchClient, pubSubClient?: PubSubClient) {
+	constructor(twitchClient: TwitchClient, pubSubClient?: PubSubClient, logLevel: LogLevel = LogLevel.WARNING) {
 		this._twitchClient = twitchClient;
-		this._pubSubClient = pubSubClient || new PubSubClient(twitchClient._config.debugLevel);
+		this._pubSubClient = pubSubClient || new PubSubClient(logLevel);
 		this._pubSubClient.onMessage((topic, messageData) => {
 			const [type] = topic.split('.');
 			if (this._listeners.has(type)) {

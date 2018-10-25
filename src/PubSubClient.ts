@@ -2,6 +2,7 @@ import * as WebSocket from 'universal-websocket-client';
 import { EventEmitter, Listener } from './Toolkit/TypedEventEmitter';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 import { PubSubMessageData } from './Messages/PubSubMessage';
+import Logger, { LogLevel } from '@d-fischer/logger';
 
 /**
  * A client for the Twitch PubSub interface.
@@ -9,7 +10,7 @@ import { PubSubMessageData } from './Messages/PubSubMessage';
 export default class PubSubClient extends EventEmitter {
 	private _socket?: WebSocket;
 
-	private readonly _debugLevel: number;
+	private readonly _logger: Logger;
 
 	private _connecting: boolean = false;
 	private _connected: boolean = false;
@@ -36,11 +37,14 @@ export default class PubSubClient extends EventEmitter {
 	/**
 	 * Creates a new PubSub client.
 	 *
-	 * @param debugLevel The level of debugging to output to the console.
+	 * @param logLevel The level of logging to use for the PubSub client.
 	 */
-	constructor(debugLevel: number = 0) {
+	constructor(logLevel: LogLevel = LogLevel.WARNING) {
 		super();
-		this._debugLevel = debugLevel;
+		this._logger = new Logger({
+			name: 'twitch-pubsub-client',
+			minLevel: logLevel
+		});
 	}
 
 	/**
@@ -159,12 +163,8 @@ export default class PubSubClient extends EventEmitter {
 	}
 
 	private _receiveMessage(dataStr: string) {
+		this._logger.debug1(`Received message: ${dataStr}`);
 		const data: PubSubIncomingPacket = JSON.parse(dataStr);
-
-		if (this._debugLevel >= 1) {
-			// tslint:disable-next-line:no-console
-			console.log('>', data);
-		}
 
 		switch (data.type) {
 			case 'PONG': {
@@ -185,20 +185,17 @@ export default class PubSubClient extends EventEmitter {
 				break;
 			}
 			default: {
-				// tslint:disable-next-line:no-any
-				console.warn(`PubSub connection received unexpected message type: ${(data as any).type}`);
+				console.warn(`PubSub connection received unexpected message type: ${(data as PubSubIncomingPacket).type}`);
 			}
 		}
 	}
 
 	private _sendPacket(data: PubSubOutgoingPacket) {
-		if (this._debugLevel >= 1) {
-			// tslint:disable-next-line:no-console
-			console.log('<', data);
-		}
+		const dataStr = JSON.stringify(data);
+		this._logger.debug1(`Sending message: ${dataStr}`);
 
 		if (this._socket && this._connected) {
-			this._socket.send(JSON.stringify(data));
+			this._socket.send(dataStr);
 		}
 	}
 
