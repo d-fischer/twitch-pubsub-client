@@ -2,9 +2,10 @@
 # yarn lockfile v1
 
 
-"@d-fischer/documen.ts@^0.2.12":
-  version "0.2.12"
-  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.2.12.tgz#ff9ed6c7f18dbf9a8b6c58b38facbbd9f79b188a"
+"@d-fischer/documen.ts@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.3.0.tgz#5a92cc1e6255872a06a465217638f8abfa40f454"
+  integrity sha512-xqayxPvZqmPglpfNfFJ7eOXtKmiDmByzKZlWojL7I8O6bGL1ivs6x7qVbs2S5hCpqOZMZRxfgcaZ+G7WJEIplA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.2"
     "@fortawesome/free-solid-svg-icons" "^5.2.0"
@@ -17,8 +18,8 @@
     "@types/invariant" "^2.2.29"
     "@types/node" "^9.6.1"
     "@types/query-string" "^5.1.0"
-    "@types/react" "^16.4.18"
-    "@types/react-dom" "^16.0.9"
+    "@types/react" "^16.7.18"
+    "@types/react-dom" "^16.0.11"
     "@types/react-fontawesome" "^1.6.2"
     "@types/react-hot-loader" "^3.0.6"
     "@types/react-paginate" "^4.3.2"
@@ -234,10 +235,9 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.31.tgz#4d1722987f8d808b4c194dceb8c213bd92f028e5"
 
 "@types/prop-types@*":
-  version "15.5.5"
-  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.5.tgz#17038dd322c2325f5da650a94d5f9974943625e3"
-  dependencies:
-    "@types/react" "*"
+  version "15.5.8"
+  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.8.tgz#8ae4e0ea205fe95c3901a5a1df7f66495e3a56ce"
+  integrity sha512-3AQoUxQcQtLHsK25wtTWIoIpgYjH3vSDroZOUr7PpCHw/jLY1RB9z9E8dBT/OSmwStVgkRNvdh+ZHNiomRieaw==
 
 "@types/query-string@^5.1.0":
   version "5.1.0"
@@ -247,11 +247,11 @@
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.2.tgz#fa8e1ad1d474688a757140c91de6dace6f4abc8d"
 
-"@types/react-dom@^16.0.9":
-  version "16.0.9"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.9.tgz#73ceb7abe6703822eab6600e65c5c52efd07fb91"
+"@types/react-dom@^16.0.11":
+  version "16.0.11"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.11.tgz#bd10ccb0d9260343f4b9a49d4f7a8330a5c1f081"
+  integrity sha512-x6zUx9/42B5Kl2Vl9HlopV8JF64wLpX3c+Pst9kc1HgzrsH+mkehe/zmHMQTplIrR48H2gpU7ZqurQolYu8XBA==
   dependencies:
-    "@types/node" "*"
     "@types/react" "*"
 
 "@types/react-fontawesome@^1.6.2":
@@ -293,9 +293,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@16.4.18", "@types/react@^16.4.18":
-  version "16.4.18"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.18.tgz#2e28a2e7f92d3fa7d6a65f2b73275c3e3138a13d"
+"@types/react@*", "@types/react@16.7.18", "@types/react@^16.7.18":
+  version "16.7.18"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.18.tgz#f4ce0d539a893dd61e36cd11ae3a5e54f5a48337"
+  integrity sha512-Tx4uu3ppK53/iHk6VpamMP3f3ahfDLEVt3ZQc8TFm30a1H3v9lMsCntBREswZIW/SKrvJjkb3Hq8UwO6GREBng==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -2349,8 +2350,9 @@ csso@~2.3.1:
     source-map "^0.5.3"
 
 csstype@^2.2.0:
-  version "2.5.6"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.6.tgz#2ae1db2319642d8b80a668d2d025c6196071e788"
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.0.tgz#6cf7b2fa7fc32aab3d746802c244d4eda71371a2"
+  integrity sha512-by8hi8BlLbowQq0qtkx54d9aN73R9oUW20HISpka5kmgsR9F7nnxgfsemuR2sdCKZh+CDNf5egW9UZMm4mgJRg==
 
 currently-unhandled@^0.4.1:
   version "0.4.1"

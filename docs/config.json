@@ -5,6 +5,9 @@
 	"routerMode": "htmlSuffix",
 	"baseUrl": "/twitch-pubsub-client",
 
+	"repoUser": "d-fischer",
+	"repoName": "twitch-pubsub-client",
+
 	"indexTitle": "Twitch.js PubSub Client",
 	"indexFile": "index.md",
 	"categories": [
