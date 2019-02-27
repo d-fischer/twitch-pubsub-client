@@ -35,6 +35,20 @@ export default class PubSubClient extends EventEmitter {
 	readonly onMessage: (handler: (topic: string, message: PubSubMessageData) => void) => Listener = this.registerEvent();
 
 	/**
+	 * Fires when the client finishes establishing a connection to the PubSub server.
+	 *
+	 * @eventListener
+	 */
+	readonly onConnect: (handler: () => void) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when the client closes its connection to the PubSub server.
+	 *
+	 * @eventListener
+	 */
+	readonly onDisconnect: (handler: (isError: boolean) => void) => Listener = this.registerEvent();
+
+	/**
 	 * Creates a new PubSub client.
 	 *
 	 * @param logLevel The level of logging to use for the PubSub client.
@@ -123,6 +137,7 @@ export default class PubSubClient extends EventEmitter {
 				this._initialConnect = false;
 				this._retryDelayGenerator = undefined;
 				this._startPingCheckTimer();
+				this.emit(this.onConnect);
 				resolve();
 			});
 			this._socket.onmessage = ({ data }: { data: WebSocket.Data }) => {
@@ -140,6 +155,7 @@ export default class PubSubClient extends EventEmitter {
 				this._connecting = false;
 				const wasInitialConnect = this._initialConnect;
 				this._initialConnect = false;
+				this.emit(this.onDisconnect, !wasClean && !this._manualDisconnect);
 				if (!wasClean) {
 					if (this._manualDisconnect) {
 						this._manualDisconnect = false;
