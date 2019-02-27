@@ -11,8 +11,6 @@ import { LogLevel } from '@d-fischer/logger';
 
 /**
  * A higher level PubSub client attached to a single user.
- *
- * Create an instance of this class via {@TwitchClient#getPubSubClient}.
  */
 export default class SingleUserPubSubClient {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
