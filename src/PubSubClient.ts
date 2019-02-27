@@ -216,7 +216,7 @@ export default class PubSubClient extends EventEmitter {
 		this._sendPacket({ type: 'PING' });
 	}
 
-	private _disconnect() {
+	disconnect() {
 		if (this._retryTimer) {
 			clearInterval(this._retryTimer);
 		}
@@ -228,7 +228,7 @@ export default class PubSubClient extends EventEmitter {
 	}
 
 	private async _reconnect() {
-		this._disconnect();
+		this.disconnect();
 		await this.connect();
 	}
 
