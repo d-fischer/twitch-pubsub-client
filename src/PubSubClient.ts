@@ -45,6 +45,7 @@ export default class PubSubClient extends EventEmitter {
 	 * Fires when the client closes its connection to the PubSub server.
 	 *
 	 * @eventListener
+	 * @param isError Whether the cause of the disconnection was an error. A reconnect will be attempted if this is true.
 	 */
 	readonly onDisconnect: (handler: (isError: boolean) => void) => Listener = this.registerEvent();
 
