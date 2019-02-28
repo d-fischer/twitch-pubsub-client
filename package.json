@@ -1,6 +1,6 @@
 {
   "name": "twitch-pubsub-client",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Listen to events using the Twitch PubSub interface.",
   "main": "lib",
   "types": "lib/index",
