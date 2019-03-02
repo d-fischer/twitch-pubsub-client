@@ -1,5 +1,5 @@
 import TwitchClient, { RefreshableAuthProvider } from 'twitch';
-import PubSubClient from './PubSubClient';
+import BasicPubSubClient from './BasicPubSubClient';
 import { NonEnumerable } from './Toolkit/Decorators';
 import PubSubListener from './PubSubListener';
 import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
@@ -14,7 +14,7 @@ import { LogLevel } from '@d-fischer/logger';
  */
 export default class SingleUserPubSubClient {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
-	@NonEnumerable private readonly _pubSubClient: PubSubClient;
+	@NonEnumerable private readonly _pubSubClient: BasicPubSubClient;
 
 	private readonly _listeners: Map<string, PubSubListener[]> = new Map;
 
@@ -22,12 +22,12 @@ export default class SingleUserPubSubClient {
 	 * Creates a new Twitch PubSub client.
 	 *
 	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
-	 * @param pubSubClient The underlying {@PubSubClient} instance. If not given, we'll create a new one.
+	 * @param pubSubClient The underlying {@BasicPubSubClient} instance. If not given, we'll create a new one.
 	 * @param logLevel The level of logging to use for the PubSub client.
 	 */
-	constructor(twitchClient: TwitchClient, pubSubClient?: PubSubClient, logLevel: LogLevel = LogLevel.WARNING) {
+	constructor(twitchClient: TwitchClient, pubSubClient?: BasicPubSubClient, logLevel: LogLevel = LogLevel.WARNING) {
 		this._twitchClient = twitchClient;
-		this._pubSubClient = pubSubClient || new PubSubClient(logLevel);
+		this._pubSubClient = pubSubClient || new BasicPubSubClient(logLevel);
 		this._pubSubClient.onMessage((topic, messageData) => {
 			const [type] = topic.split('.');
 			if (this._listeners.has(type)) {

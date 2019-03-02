@@ -1,8 +1,8 @@
-import PubSubClient from './PubSubClient';
+import BasicPubSubClient from './BasicPubSubClient';
 import SingleUserPubSubClient from './SingleUserPubSubClient';
 import PubSubListener from './PubSubListener';
 
-export { PubSubClient, SingleUserPubSubClient, PubSubListener };
+export { BasicPubSubClient, SingleUserPubSubClient, PubSubListener };
 
 export * from './PubSubPacket';
 
