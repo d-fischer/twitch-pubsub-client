@@ -1,8 +1,9 @@
+import PubSubClient from './PubSubClient';
 import BasicPubSubClient from './BasicPubSubClient';
 import SingleUserPubSubClient from './SingleUserPubSubClient';
 import PubSubListener from './PubSubListener';
 
-export { BasicPubSubClient, SingleUserPubSubClient, PubSubListener };
+export { BasicPubSubClient, SingleUserPubSubClient, PubSubClient, PubSubListener };
 
 export * from './PubSubPacket';
 
@@ -11,4 +12,5 @@ import PubSubBitsMessage from './Messages/PubSubBitsMessage';
 import PubSubCommerceMessage from './Messages/PubSubCommerceMessage';
 import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
+
 export { PubSubMessage, PubSubBitsMessage, PubSubCommerceMessage, PubSubSubscriptionMessage, PubSubWhisperMessage };

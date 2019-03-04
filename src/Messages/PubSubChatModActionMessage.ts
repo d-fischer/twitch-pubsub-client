@@ -6,6 +6,7 @@ export interface PubSubChatModActionMessageContent {
 	moderation_action: string;
 	args: string[];
 	created_by: string;
+	created_by_user_id: string;
 }
 
 export interface PubSubChatModActionMessageData {
@@ -59,6 +60,13 @@ export default class PubSubChatModActionMessage {
 	}
 
 	/**
+	 * The user ID of the moderator that performed the action.
+	 */
+	get userId() {
+		return this._data.data.created_by_user_id;
+	}
+
+	/**
 	 * The name of the moderator that performed the action.
 	 */
 	get userName() {
@@ -69,6 +77,6 @@ export default class PubSubChatModActionMessage {
 	 * Retrieves more data about the user that performed the action.
 	 */
 	async getUser() {
-		return this._twitchClient.helix.users.getUserByName(this._data.data.created_by);
+		return this._twitchClient.helix.users.getUserById(this._data.data.created_by_user_id);
 	}
 }
