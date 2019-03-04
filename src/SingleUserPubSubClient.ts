@@ -1,4 +1,4 @@
-import TwitchClient, { RefreshableAuthProvider } from 'twitch';
+import TwitchClient, { TokenInfo } from 'twitch';
 import BasicPubSubClient from './BasicPubSubClient';
 import { NonEnumerable } from './Toolkit/Decorators';
 import PubSubListener from './PubSubListener';
@@ -78,14 +78,20 @@ export default class SingleUserPubSubClient {
 	}
 
 	private async _getUserData(scope?: string) {
-		let accessToken = await this._twitchClient._config.authProvider.getAccessToken(scope);
-		let tokenInfo = await this._twitchClient.getTokenInfo();
+		const tokenData = await this._twitchClient._config.authProvider.getAccessToken(scope);
+		let accessToken: string | undefined;
+		let tokenInfo: TokenInfo | undefined;
 
-		if (!tokenInfo.valid && this._twitchClient._config.authProvider instanceof RefreshableAuthProvider) {
+		if (tokenData) {
+			accessToken = tokenData.accessToken;
+			tokenInfo = await this._twitchClient.getTokenInfo();
+		}
+
+		if (!(tokenInfo && tokenInfo.valid) && this._twitchClient._config.authProvider.refresh) {
 			accessToken = (await this._twitchClient._config.authProvider.refresh()).accessToken;
 			tokenInfo = await this._twitchClient.getTokenInfo();
 		}
-		if (!tokenInfo.valid) {
+		if (!(tokenInfo && tokenInfo.valid) || !accessToken) {
 			throw new Error('PubSub authentication failed');
 		}
 
