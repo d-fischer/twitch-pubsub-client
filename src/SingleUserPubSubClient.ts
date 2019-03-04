@@ -1,4 +1,4 @@
-import TwitchClient, { TokenInfo } from 'twitch';
+import TwitchClient, { extractUserId, TokenInfo, UserIdResolvable } from 'twitch';
 import BasicPubSubClient from './BasicPubSubClient';
 import { NonEnumerable } from './Toolkit/Decorators';
 import PubSubListener from './PubSubListener';
@@ -8,6 +8,7 @@ import PubSubCommerceMessage, { PubSubCommerceMessageData } from './Messages/Pub
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import PubSubMessage from './Messages/PubSubMessage';
 import { LogLevel } from '@d-fischer/logger';
+import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
 
 /**
  * Options for creating the single-user PubSub client.
@@ -47,7 +48,7 @@ export default class SingleUserPubSubClient {
 		this._twitchClient = twitchClient;
 		this._pubSubClient = pubSubClient || new BasicPubSubClient(logLevel);
 		this._pubSubClient.onMessage((topic, messageData) => {
-			const [type] = topic.split('.');
+			const [type, ...args] = topic.split('.');
 			if (this._listeners.has(type)) {
 				let message: PubSubMessage;
 				switch (type) {
@@ -61,6 +62,10 @@ export default class SingleUserPubSubClient {
 					}
 					case 'channel-commerce-events-v1': {
 						message = new PubSubCommerceMessage(messageData as PubSubCommerceMessageData, this._twitchClient);
+						break;
+					}
+					case 'chat_moderator_actions': {
+						message = new PubSubChatModActionMessage(messageData as PubSubChatModActionMessageData, args[1], this._twitchClient);
 						break;
 					}
 					case 'whispers': {
@@ -100,7 +105,7 @@ export default class SingleUserPubSubClient {
 		return { userId, accessToken };
 	}
 
-	private async _addListener<T extends PubSubMessage>(type: string, callback: (message: T) => void, scope?: string) {
+	private async _addListener<T extends PubSubMessage>(type: string, callback: (message: T) => void, scope?: string, ...additionalParams: string[]) {
 		await this._pubSubClient.connect();
 		const { userId, accessToken } = await this._getUserData(scope);
 		const listener = new PubSubListener(type, userId, callback, this);
@@ -108,7 +113,7 @@ export default class SingleUserPubSubClient {
 			this._listeners.get(type)!.push(listener);
 		} else {
 			this._listeners.set(type, [listener]);
-			await this._pubSubClient.listen(`${type}.${userId}`, accessToken);
+			await this._pubSubClient.listen([type, userId, ...additionalParams].join('.'), accessToken);
 		}
 		return listener;
 	}
@@ -155,6 +160,18 @@ export default class SingleUserPubSubClient {
 	 */
 	async onWhisper(callback: (message: PubSubWhisperMessage) => void) {
 		return this._addListener('whispers', callback, 'chat_login');
+	}
+
+	/**
+	 * Adds a listener to mod action events to the client.
+	 *
+	 * @param channelId The ID of the channel to listen to.
+	 * @param callback A function to be called when a mod action event is sent to the user.
+	 *
+	 * It receives a {@PubSubChatModActionMessage} object.
+	 */
+	async onModAction(channelId: UserIdResolvable, callback: (message: PubSubChatModActionMessage) => void) {
+		return this._addListener('chat_moderator_actions', callback, undefined, extractUserId(channelId));
 	}
 
 	/**

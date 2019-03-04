@@ -2,6 +2,7 @@ import PubSubWhisperMessage, { PubSubWhisperMessageData } from './PubSubWhisperM
 import PubSubCommerceMessage, { PubSubCommerceMessageData } from './PubSubCommerceMessage';
 import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './PubSubSubscriptionMessage';
 import PubSubBitsMessage, { PubSubBitsMessageData } from './PubSubBitsMessage';
+import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './PubSubChatModActionMessage';
 
 export interface PubSubBasicMessageInfo {
 	user_name: string;
@@ -27,8 +28,8 @@ export interface PubSubChatMessage {
 	emotes: PubSubChatMessageEmote[];
 }
 
-type PubSubMessageData = PubSubBitsMessageData | PubSubSubscriptionMessageData | PubSubCommerceMessageData | PubSubWhisperMessageData;
+type PubSubMessageData = PubSubBitsMessageData | PubSubChatModActionMessageData | PubSubSubscriptionMessageData | PubSubCommerceMessageData | PubSubWhisperMessageData;
 export { PubSubMessageData };
 
-type PubSubMessage = PubSubBitsMessage | PubSubSubscriptionMessage | PubSubCommerceMessage | PubSubWhisperMessage;
+type PubSubMessage = PubSubBitsMessage | PubSubChatModActionMessage | PubSubSubscriptionMessage | PubSubCommerceMessage | PubSubWhisperMessage;
 export default PubSubMessage;
