@@ -10,9 +10,11 @@ export default class PubSubClient {
 	private _rootClient = new BasicPubSubClient();
 	private _userClients = new Map<string, SingleUserPubSubClient>();
 
-	async registerClient(twitchClient: TwitchClient) {
-		const tokenInfo = await twitchClient.getTokenInfo();
-		const userId = tokenInfo.userId!;
+	async registerClient(twitchClient: TwitchClient, userId?: string) {
+		if (!userId) {
+			const tokenInfo = await twitchClient.getTokenInfo();
+			userId = tokenInfo.userId!;
+		}
 
 		this._userClients.set(userId, new SingleUserPubSubClient(twitchClient, this._rootClient));
 	}
