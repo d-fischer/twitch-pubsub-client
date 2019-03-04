@@ -25,9 +25,11 @@
   "peerDependencies": {
     "twitch": "^1.0.0"
   },
-  "resolutions": {
-    "@types/react": "16.7.18"
-  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib"
+  ],
   "scripts": {
     "lint": "tslint --project .",
     "build": "tsc",
