@@ -8,8 +8,8 @@ import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
 import { NonEnumerable } from './Toolkit/Decorators';
 
 export default class PubSubClient {
-	@NonEnumerable private _rootClient = new BasicPubSubClient();
-	@NonEnumerable private _userClients = new Map<string, SingleUserPubSubClient>();
+	@NonEnumerable private readonly _rootClient = new BasicPubSubClient();
+	@NonEnumerable private readonly _userClients = new Map<string, SingleUserPubSubClient>();
 
 	async registerUserListener(twitchClient: TwitchClient, userId?: string) {
 		if (!userId) {
@@ -30,19 +30,19 @@ export default class PubSubClient {
 		return this._userClients.get(userId)!;
 	}
 
-	onBits(userId: string, callback: (message: PubSubBitsMessage) => void) {
+	async onBits(userId: string, callback: (message: PubSubBitsMessage) => void) {
 		return this.getUserListener(userId).onBits(callback);
 	}
 
-	onSubscription(userId: string, callback: (message: PubSubSubscriptionMessage) => void) {
+	async onSubscription(userId: string, callback: (message: PubSubSubscriptionMessage) => void) {
 		return this.getUserListener(userId).onSubscription(callback);
 	}
 
-	onCommerce(userId: string, callback: (message: PubSubCommerceMessage) => void) {
+	async onCommerce(userId: string, callback: (message: PubSubCommerceMessage) => void) {
 		return this.getUserListener(userId).onCommerce(callback);
 	}
 
-	onWhisper(userId: string, callback: (message: PubSubWhisperMessage) => void) {
+	async onWhisper(userId: string, callback: (message: PubSubWhisperMessage) => void) {
 		return this.getUserListener(userId).onWhisper(callback);
 	}
 }
