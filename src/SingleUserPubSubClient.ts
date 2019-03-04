@@ -10,6 +10,26 @@ import PubSubMessage from './Messages/PubSubMessage';
 import { LogLevel } from '@d-fischer/logger';
 
 /**
+ * Options for creating the single-user PubSub client.
+ */
+interface SingleUserPubSubClientOptions {
+	/**
+	 * The {@TwitchClient} instance to use for API requests and token management.
+	 */
+	twitchClient: TwitchClient;
+
+	/**
+	 * The underlying {@BasicPubSubClient} instance. If not given, we'll create a new one.
+	 */
+	pubSubClient?: BasicPubSubClient;
+
+	/**
+	 * The level of logging to use for the PubSub client.
+	 */
+	logLevel?: LogLevel;
+}
+
+/**
  * A higher level PubSub client attached to a single user.
  */
 export default class SingleUserPubSubClient {
@@ -21,11 +41,9 @@ export default class SingleUserPubSubClient {
 	/**
 	 * Creates a new Twitch PubSub client.
 	 *
-	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
-	 * @param pubSubClient The underlying {@BasicPubSubClient} instance. If not given, we'll create a new one.
-	 * @param logLevel The level of logging to use for the PubSub client.
+	 * @expandParams
 	 */
-	constructor(twitchClient: TwitchClient, pubSubClient?: BasicPubSubClient, logLevel: LogLevel = LogLevel.WARNING) {
+	constructor({ twitchClient, pubSubClient, logLevel = LogLevel.WARNING }: SingleUserPubSubClientOptions) {
 		this._twitchClient = twitchClient;
 		this._pubSubClient = pubSubClient || new BasicPubSubClient(logLevel);
 		this._pubSubClient.onMessage((topic, messageData) => {

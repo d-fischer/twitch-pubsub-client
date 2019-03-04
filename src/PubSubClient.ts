@@ -5,18 +5,22 @@ import PubSubBitsMessage from './Messages/PubSubBitsMessage';
 import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
 import PubSubCommerceMessage from './Messages/PubSubCommerceMessage';
 import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
+import { NonEnumerable } from './Toolkit/Decorators';
 
 export default class PubSubClient {
-	private _rootClient = new BasicPubSubClient();
-	private _userClients = new Map<string, SingleUserPubSubClient>();
+	@NonEnumerable private _rootClient = new BasicPubSubClient();
+	@NonEnumerable private _userClients = new Map<string, SingleUserPubSubClient>();
 
-	async registerClient(twitchClient: TwitchClient, userId?: string) {
+	async registerUserListener(twitchClient: TwitchClient, userId?: string) {
 		if (!userId) {
 			const tokenInfo = await twitchClient.getTokenInfo();
-			userId = tokenInfo.userId!;
+			if (!tokenInfo.userId) {
+				throw new Error('Passed a Twitch client that is not bound to a user');
+			}
+			userId = tokenInfo.userId;
 		}
 
-		this._userClients.set(userId, new SingleUserPubSubClient(twitchClient, this._rootClient));
+		this._userClients.set(userId, new SingleUserPubSubClient({ twitchClient: twitchClient, pubSubClient: this._rootClient }));
 	}
 
 	getUserListener(userId: string) {
