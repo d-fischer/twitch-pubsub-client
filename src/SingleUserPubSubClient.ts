@@ -52,7 +52,7 @@ export default class SingleUserPubSubClient {
 			if (this._listeners.has(type)) {
 				let message: PubSubMessage;
 				switch (type) {
-					case 'channel-bits-events-v1': {
+					case 'channel-bits-events-v2': {
 						message = new PubSubBitsMessage(messageData as PubSubBitsMessageData, this._twitchClient);
 						break;
 					}
