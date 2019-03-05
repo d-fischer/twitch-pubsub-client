@@ -3,12 +3,13 @@ import BasicPubSubClient from './BasicPubSubClient';
 import { NonEnumerable } from './Toolkit/Decorators';
 import PubSubListener from './PubSubListener';
 import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
+import PubSubBitsBadgeUnlockMessage, { PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
+import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
 import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
 import PubSubCommerceMessage, { PubSubCommerceMessageData } from './Messages/PubSubCommerceMessage';
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import PubSubMessage from './Messages/PubSubMessage';
 import { LogLevel } from '@d-fischer/logger';
-import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
 
 /**
  * Options for creating the single-user PubSub client.
@@ -54,6 +55,10 @@ export default class SingleUserPubSubClient {
 				switch (type) {
 					case 'channel-bits-events-v2': {
 						message = new PubSubBitsMessage(messageData as PubSubBitsMessageData, this._twitchClient);
+						break;
+					}
+					case 'channel-bits-badge-unlocks': {
+						message = new PubSubBitsBadgeUnlockMessage(messageData as PubSubBitsBadgeUnlockMessageData, this._twitchClient);
 						break;
 					}
 					case 'channel-subscribe-events-v1': {
@@ -127,6 +132,17 @@ export default class SingleUserPubSubClient {
 	 */
 	async onBits(callback: (message: PubSubBitsMessage) => void) {
 		return this._addListener('channel-bits-events-v2', callback, 'bits:read');
+	}
+
+	/**
+	 * Adds a listener to bits badge unlock events to the client.
+	 *
+	 * @param callback A function to be called when a bits event happens in the user's channel.
+	 *
+	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
+	 */
+	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void) {
+		return this._addListener('channel-bits-badge-unlocks', callback);
 	}
 
 	/**

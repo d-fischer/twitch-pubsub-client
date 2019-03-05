@@ -7,6 +7,7 @@ import PubSubCommerceMessage from './Messages/PubSubCommerceMessage';
 import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
 import { NonEnumerable } from './Toolkit/Decorators';
 import PubSubChatModActionMessage from './Messages/PubSubChatModActionMessage';
+import PubSubBitsBadgeUnlockMessage from './Messages/PubSubBitsBadgeUnlockMessage';
 
 export default class PubSubClient {
 	@NonEnumerable private readonly _rootClient = new BasicPubSubClient();
@@ -37,6 +38,10 @@ export default class PubSubClient {
 
 	async onBits(user: UserIdResolvable, callback: (message: PubSubBitsMessage) => void) {
 		return this.getUserListener(user).onBits(callback);
+	}
+
+	async onBitsBadgeUnlock(user: UserIdResolvable, callback: (message: PubSubBitsBadgeUnlockMessage) => void) {
+		return this.getUserListener(user).onBitsBadgeUnlock(callback);
 	}
 
 	async onSubscription(user: UserIdResolvable, callback: (message: PubSubSubscriptionMessage) => void) {
