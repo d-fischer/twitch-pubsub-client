@@ -1,18 +1,20 @@
 import { PubSubBasicMessageInfo } from './PubSubMessage';
 import { NonEnumerable } from '../Toolkit/Decorators';
 import TwitchClient from 'twitch';
+import { MakeOptional } from '../Toolkit/Types';
 
 export interface PubSubBitsMessageBadgeEntitlement {
 	previous_version: number;
 	new_version: number;
 }
 
-export interface PubSubBitsMessageContent extends PubSubBasicMessageInfo {
+export interface PubSubBitsMessageContent extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
 	chat_message: string;
 	bits_used: number;
 	total_bits_used: number;
 	context: 'cheer'; // TODO is this complete?
 	badge_entitlement: PubSubBitsMessageBadgeEntitlement | null;
+	is_anonymous: boolean;
 }
 
 export interface PubSubBitsMessageData {
@@ -51,7 +53,7 @@ export default class PubSubBitsMessage {
 	 * Retrieves more data about the user.
 	 */
 	async getUser() {
-		return this._twitchClient.helix.users.getUserById(this._data.data.user_id);
+		return this._data.data.user_id ? this._twitchClient.helix.users.getUserById(this._data.data.user_id) : null;
 	}
 
 	/**
@@ -73,5 +75,12 @@ export default class PubSubBitsMessage {
 	 */
 	get totalBits() {
 		return this._data.data.total_bits_used;
+	}
+
+	/**
+	 * Whether the cheer was anonymous.
+	 */
+	get isAnonymous() {
+		return this._data.data.is_anonymous;
 	}
 }

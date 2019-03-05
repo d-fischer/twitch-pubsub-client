@@ -126,7 +126,7 @@ export default class SingleUserPubSubClient {
 	 * It receives a {@PubSubBitsMessage} object.
 	 */
 	async onBits(callback: (message: PubSubBitsMessage) => void) {
-		return this._addListener('channel-bits-events-v1', callback);
+		return this._addListener('channel-bits-events-v2', callback, 'bits:read');
 	}
 
 	/**
@@ -159,7 +159,7 @@ export default class SingleUserPubSubClient {
 	 * It receives a {@PubSubWhisperMessage} object.
 	 */
 	async onWhisper(callback: (message: PubSubWhisperMessage) => void) {
-		return this._addListener('whispers', callback, 'chat_login');
+		return this._addListener('whispers', callback, 'whispers:read');
 	}
 
 	/**
