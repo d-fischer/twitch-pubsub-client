@@ -9,8 +9,8 @@ export * from './PubSubPacket';
 
 import PubSubMessage from './Messages/PubSubMessage';
 import PubSubBitsMessage from './Messages/PubSubBitsMessage';
-import PubSubCommerceMessage from './Messages/PubSubCommerceMessage';
+import PubSubBitsBadgeUnlockMessage from './Messages/PubSubBitsBadgeUnlockMessage';
 import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
 
-export { PubSubMessage, PubSubBitsMessage, PubSubCommerceMessage, PubSubSubscriptionMessage, PubSubWhisperMessage };
+export { PubSubMessage, PubSubBitsMessage, PubSubBitsBadgeUnlockMessage, PubSubSubscriptionMessage, PubSubWhisperMessage };

@@ -6,7 +6,6 @@ import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsM
 import PubSubBitsBadgeUnlockMessage, { PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
 import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
 import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
-import PubSubCommerceMessage, { PubSubCommerceMessageData } from './Messages/PubSubCommerceMessage';
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import PubSubMessage from './Messages/PubSubMessage';
 import { LogLevel } from '@d-fischer/logger';
@@ -63,10 +62,6 @@ export default class SingleUserPubSubClient {
 					}
 					case 'channel-subscribe-events-v1': {
 						message = new PubSubSubscriptionMessage(messageData as PubSubSubscriptionMessageData, this._twitchClient);
-						break;
-					}
-					case 'channel-commerce-events-v1': {
-						message = new PubSubCommerceMessage(messageData as PubSubCommerceMessageData, this._twitchClient);
 						break;
 					}
 					case 'chat_moderator_actions': {
@@ -154,17 +149,6 @@ export default class SingleUserPubSubClient {
 	 */
 	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void) {
 		return this._addListener('channel-subscribe-events-v1', callback, 'channel_subscriptions');
-	}
-
-	/**
-	 * Adds a listener to commerce events to the client.
-	 *
-	 * @param callback A function to be called when a commerce event happens in the user's channel.
-	 *
-	 * It receives a {@PubSubCommerceMessage} object.
-	 */
-	async onCommerce(callback: (message: PubSubCommerceMessage) => void) {
-		return this._addListener('channel-commerce-events-v1', callback);
 	}
 
 	/**

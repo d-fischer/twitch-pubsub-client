@@ -1,13 +1,12 @@
+import TwitchClient, { extractUserId, UserIdResolvable } from 'twitch';
 import SingleUserPubSubClient from './SingleUserPubSubClient';
 import BasicPubSubClient from './BasicPubSubClient';
-import TwitchClient, { extractUserId, UserIdResolvable } from 'twitch';
-import PubSubBitsMessage from './Messages/PubSubBitsMessage';
-import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
-import PubSubCommerceMessage from './Messages/PubSubCommerceMessage';
-import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
 import { NonEnumerable } from './Toolkit/Decorators';
-import PubSubChatModActionMessage from './Messages/PubSubChatModActionMessage';
+import PubSubBitsMessage from './Messages/PubSubBitsMessage';
 import PubSubBitsBadgeUnlockMessage from './Messages/PubSubBitsBadgeUnlockMessage';
+import PubSubChatModActionMessage from './Messages/PubSubChatModActionMessage';
+import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
+import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
 
 export default class PubSubClient {
 	@NonEnumerable private readonly _rootClient = new BasicPubSubClient();
@@ -46,10 +45,6 @@ export default class PubSubClient {
 
 	async onSubscription(user: UserIdResolvable, callback: (message: PubSubSubscriptionMessage) => void) {
 		return this.getUserListener(user).onSubscription(callback);
-	}
-
-	async onCommerce(user: UserIdResolvable, callback: (message: PubSubCommerceMessage) => void) {
-		return this.getUserListener(user).onCommerce(callback);
 	}
 
 	async onWhisper(user: UserIdResolvable, callback: (message: PubSubWhisperMessage) => void) {

@@ -2,7 +2,6 @@ import PubSubBitsMessage, { PubSubBitsMessageData } from './PubSubBitsMessage';
 import PubSubBitsBadgeUnlockMessage, { PubSubBitsBadgeUnlockMessageData } from './PubSubBitsBadgeUnlockMessage';
 import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './PubSubChatModActionMessage';
 import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './PubSubSubscriptionMessage';
-import PubSubCommerceMessage, { PubSubCommerceMessageData } from './PubSubCommerceMessage';
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './PubSubWhisperMessage';
 
 export interface PubSubBasicMessageInfo {
@@ -29,8 +28,8 @@ export interface PubSubChatMessage {
 	emotes: PubSubChatMessageEmote[];
 }
 
-type PubSubMessageData = PubSubBitsMessageData | PubSubBitsBadgeUnlockMessageData | PubSubChatModActionMessageData | PubSubSubscriptionMessageData | PubSubCommerceMessageData | PubSubWhisperMessageData;
+type PubSubMessageData = PubSubBitsMessageData | PubSubBitsBadgeUnlockMessageData | PubSubChatModActionMessageData | PubSubSubscriptionMessageData | PubSubWhisperMessageData;
 export { PubSubMessageData };
 
-type PubSubMessage = PubSubBitsMessage | PubSubBitsBadgeUnlockMessage | PubSubChatModActionMessage | PubSubSubscriptionMessage | PubSubCommerceMessage | PubSubWhisperMessage;
+type PubSubMessage = PubSubBitsMessage | PubSubBitsBadgeUnlockMessage | PubSubChatModActionMessage | PubSubSubscriptionMessage | PubSubWhisperMessage;
 export default PubSubMessage;
