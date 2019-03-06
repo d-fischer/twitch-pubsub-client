@@ -6,9 +6,10 @@ A new {@PubSubClient} class was introduced that has a much smoother developer ex
 
 ## Pass an object instead of an argument list to the {@SingleUserPubSubClient} constructor
 
-The constructor of {@SingleUserPubSubClient} was changed to take only a configuration object.
+The constructor of {@SingleUserPubSubClient} was changed to take only a {@SingleUserPubSubClientOptions} object.
 
-Anyway, the new {@PubSubClient} has an interface that's very similar to this class, but supports multiple users. Consider using it instead of {@SingleUserPubSubClient}.
+Anyway, the new {@PubSubClient} has an interface that's very similar to this class, but supports multiple users.
+Consider using it instead of using {@SingleUserPubSubClient} directly.
 
 ## Remove any calls to {@SingleUserPubSubClient}'s `onCommerce` method
 
