@@ -10,6 +10,6 @@ The constructor of {@SingleUserPubSubClient} was changed to take only a configur
 
 Anyway, the new {@PubSubClient} has an interface that's very similar to this class, but supports multiple users. Consider using it instead of {@SingleUserPubSubClient}.
 
-## Remove any calls to {@SingleUserPubSubClient#onCommerce}
+## Remove any calls to {@SingleUserPubSubClient}'s `onCommerce` method
 
 The `commerce` topic was abandoned by Twitch, so it was removed from the library as well.
