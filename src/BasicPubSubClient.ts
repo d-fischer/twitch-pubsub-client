@@ -165,6 +165,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * Connects to the PubSub interface.
 	 */
 	async connect() {
+		this._logger.info('Connecting...');
 		return new Promise<void>((resolve, reject) => {
 			if (this._connected) {
 				resolve();
@@ -180,7 +181,12 @@ export default class BasicPubSubClient extends EventEmitter {
 				this._initialConnect = false;
 				this._retryDelayGenerator = undefined;
 				this._startPingCheckTimer();
+				this._logger.info('Connection established');
 				await this._resendListens();
+				if (this._topics.size) {
+					this._logger.info('Listened to previously registered topics');
+					this._logger.debug2(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
+				}
 				this.emit(this.onConnect);
 				resolve();
 			};
@@ -209,9 +215,9 @@ export default class BasicPubSubClient extends EventEmitter {
 				if (!wasClean) {
 					if (this._manualDisconnect) {
 						this._manualDisconnect = false;
+						this._logger.info('Successfully disconnected');
 					} else {
-						// tslint:disable-next-line:no-console
-						console.error(`PubSub connection unexpectedly closed: [${code}] ${reason}`);
+						this._logger.err(`Connection unexpectedly closed: [${code}] ${reason}`);
 						if (wasInitialConnect) {
 							reject();
 						}
@@ -219,8 +225,7 @@ export default class BasicPubSubClient extends EventEmitter {
 							this._retryDelayGenerator = BasicPubSubClient._getReconnectWaitTime();
 						}
 						const delay = this._retryDelayGenerator.next().value;
-						// tslint:disable-next-line:no-console
-						console.log(`Reconnecting in ${delay} seconds`);
+						this._logger.info(`Reconnecting in ${delay} seconds`);
 						this._retryTimer = setTimeout(async () => this.connect(), delay * 1000);
 					}
 				}
@@ -229,7 +234,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	}
 
 	private _receiveMessage(dataStr: string) {
-		this._logger.debug1(`Received message: ${dataStr}`);
+		this._logger.debug2(`Received message: ${dataStr}`);
 		const data: PubSubIncomingPacket = JSON.parse(dataStr);
 
 		switch (data.type) {
@@ -251,14 +256,14 @@ export default class BasicPubSubClient extends EventEmitter {
 				break;
 			}
 			default: {
-				console.warn(`PubSub connection received unexpected message type: ${(data as PubSubIncomingPacket).type}`);
+				this._logger.warn(`PubSub connection received unexpected message type: ${(data as PubSubIncomingPacket).type}`);
 			}
 		}
 	}
 
 	private _sendPacket(data: PubSubOutgoingPacket) {
 		const dataStr = JSON.stringify(data);
-		this._logger.debug1(`Sending message: ${dataStr}`);
+		this._logger.debug2(`Sending message: ${dataStr}`);
 
 		if (this._socket && this._connected) {
 			this._socket.send(dataStr);
@@ -266,7 +271,9 @@ export default class BasicPubSubClient extends EventEmitter {
 	}
 
 	private _pingCheck() {
+		const now = Date.now();
 		const pongListener = this._onPong(() => {
+			this._logger.debug1(`Current ping: ${Date.now() - now}ms`);
 			if (this._pingTimeoutTimer) {
 				clearTimeout(this._pingTimeoutTimer);
 			}
@@ -274,6 +281,7 @@ export default class BasicPubSubClient extends EventEmitter {
 		});
 		this._pingTimeoutTimer = setTimeout(
 			async () => {
+				this._logger.err('Ping timeout');
 				this.removeListener(pongListener);
 				return this._reconnect();
 			},
@@ -286,6 +294,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * Disconnects from the PubSub interface.
 	 */
 	disconnect() {
+		this._logger.info('Disconnecting...');
 		if (this._retryTimer) {
 			clearInterval(this._retryTimer);
 		}
