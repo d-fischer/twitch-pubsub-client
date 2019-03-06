@@ -21,20 +21,9 @@
 					"file": "basic-usage/getting-started.md"
 				},
 				{
-					"name": "listening-to-single-channel",
-					"title": "Listening to a single channel",
-					"file": "basic-usage/listening-to-single-channel.md"
-				}
-			]
-		},
-		{
-			"name": "low-level",
-			"title": "Low level usage",
-			"articles": [
-				{
-					"name": "one-client-multiple-channels",
-					"title": "One client, multiple channels",
-					"file": "low-level/one-client-multiple-channels.md"
+					"name": "listening-to-topics",
+					"title": "Listening to topics",
+					"file": "basic-usage/listening-to-topics.md"
 				}
 			]
 		}
