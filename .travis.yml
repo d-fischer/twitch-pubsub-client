@@ -14,5 +14,5 @@ script:
 jobs:
     include:
         - stage: Publish docs
-          if: type = push AND fork = false
+          if: type = push AND fork = false AND tag IS blank
           script: travis/publishDocs.sh
