@@ -3,14 +3,17 @@ import { EventEmitter, Listener } from './Toolkit/TypedEventEmitter';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 import { PubSubMessageData } from './Messages/PubSubMessage';
 import Logger, { LogLevel } from '@d-fischer/logger';
+import { NonEnumerable } from './Toolkit/Decorators';
 
 /**
  * A client for the Twitch PubSub interface.
  */
 export default class BasicPubSubClient extends EventEmitter {
 	private _socket?: WebSocket;
+	@NonEnumerable private readonly _logger: Logger;
 
-	private readonly _logger: Logger;
+	// topic => token
+	@NonEnumerable private readonly _topics = new Map<string, string | undefined>();
 
 	private _connecting: boolean = false;
 	private _connected: boolean = false;
@@ -73,13 +76,13 @@ export default class BasicPubSubClient extends EventEmitter {
 			topics = [topics];
 		}
 
-		return this._sendNonced({
-			type: 'LISTEN',
-			data: {
-				topics,
-				auth_token: accessToken
-			}
-		});
+		for (const topic of topics) {
+			this._topics.set(topic, accessToken);
+		}
+
+		if (this._connected) {
+			return this._sendListen(topics, accessToken);
+		}
 	}
 
 	/**
@@ -92,12 +95,50 @@ export default class BasicPubSubClient extends EventEmitter {
 			topics = [topics];
 		}
 
+		for (const topic of topics) {
+			this._topics.delete(topic);
+		}
+
+		if (this._connected) {
+			return this._sendUnlisten(topics);
+		}
+	}
+
+	private async _sendListen(topics: string[], accessToken?: string) {
+		return this._sendNonced({
+			type: 'LISTEN',
+			data: {
+				topics,
+				auth_token: accessToken
+			}
+		});
+	}
+
+	private async _sendUnlisten(topics: string[]) {
 		return this._sendNonced({
 			type: 'UNLISTEN',
 			data: {
 				topics
 			}
 		});
+	}
+
+	private async _resendListens() {
+		const topicsByToken = Array.from(this._topics.entries()).reduce(
+			(result, [topic, token]) => {
+				if (!result.has(token)) {
+					result.set(token, [topic]);
+				} else {
+					result.get(token)!.push(topic);
+				}
+
+				return result;
+			},
+			new Map<string | undefined, string[]>()
+		);
+		return Promise.all(
+			Array.from(topicsByToken.entries()).map(async ([token, topics]) => this._sendListen(topics, token))
+		);
 	}
 
 	private async _sendNonced<T extends PubSubNoncedOutgoingPacket>(packet: T) {
@@ -132,18 +173,26 @@ export default class BasicPubSubClient extends EventEmitter {
 			this._connecting = true;
 			this._initialConnect = true;
 			this._socket = new WebSocket('wss://pubsub-edge.twitch.tv');
-			this._socket.on('open', () => {
+
+			this._socket.onopen = async () => {
 				this._connected = true;
 				this._connecting = false;
 				this._initialConnect = false;
 				this._retryDelayGenerator = undefined;
 				this._startPingCheckTimer();
+				await this._resendListens();
 				this.emit(this.onConnect);
 				resolve();
-			});
+			};
+
 			this._socket.onmessage = ({ data }: { data: WebSocket.Data }) => {
 				this._receiveMessage(data.toString());
 			};
+
+			// The following empty error callback needs to exist so connection errors are passed down to `onclose` down below - otherwise the process just crashes instead
+			// tslint:disable-next-line:no-empty
+			this._socket.onerror = () => {};
+
 			this._socket.onclose = ({ wasClean, code, reason }) => {
 				if (this._pingCheckTimer) {
 					clearInterval(this._pingCheckTimer);
@@ -233,6 +282,9 @@ export default class BasicPubSubClient extends EventEmitter {
 		this._sendPacket({ type: 'PING' });
 	}
 
+	/**
+	 * Disconnects from the PubSub interface.
+	 */
 	disconnect() {
 		if (this._retryTimer) {
 			clearInterval(this._retryTimer);
@@ -244,7 +296,10 @@ export default class BasicPubSubClient extends EventEmitter {
 		}
 	}
 
-	private async _reconnect() {
+	/**
+	 * Reconnects to the PubSub interface.
+	 */
+	async _reconnect() {
 		this.disconnect();
 		await this.connect();
 	}
