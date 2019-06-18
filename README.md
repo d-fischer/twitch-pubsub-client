@@ -1,20 +1,3 @@
-# Twitch.js - PubSub Client
+# Deprecated repository
 
-## Installation
-
-To add Twitch.js and the PubSub client to your project, just execute:
-
-	yarn add twitch twitch-pubsub-client
-
-or using npm:
-
-	npm install --save twitch twitch-pubsub-client
-
-## Documentation
-
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-pubsub-client)
-which also includes a complete reference of all classes and interfaces.
-
-## If you're getting stuck...
-
-You can join the [Discord server](https://discord.gg/b9ZqMfz) for support.
+The code for this package is now being maintained in the [`twitch` monorepo](https://github.com/d-fischer/twitch).
